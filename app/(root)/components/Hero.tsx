@@ -44,7 +44,7 @@ function Hero() {
         {/* Subtitle */}
         <p className="mx-auto mb-12 max-w-2xl text-center text-lg text-neutral-500 md:text-xl">
           Platform kompilator online modern untuk menjalankan, menguji, dan
-          berbagi kode dalam 50+ bahasa pemrograman tanpa setup.
+          berbagi kode dalam beberapa bahasa pemrograman tanpa setup.
         </p>
 
         {/* CTA Buttons */}

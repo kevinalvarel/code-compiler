@@ -29,7 +29,7 @@ export default function RootLayout({
   return (
     <html lang="en" className="dark">
       <body
-        className={` ${poppins.variable} ${plusJakartaSans.variable} antialiased`}
+        className={` ${poppins.variable} ${plusJakartaSans.variable} antialiased bg-[#0a0a0a]`}
       >
         <Header />
         {children}
