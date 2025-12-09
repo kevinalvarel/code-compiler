@@ -31,7 +31,6 @@ export default function RootLayout({
       <body
         className={` ${poppins.variable} ${plusJakartaSans.variable} antialiased`}
       >
-        <Header />
         {children}
       </body>
     </html>
