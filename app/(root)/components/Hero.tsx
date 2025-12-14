@@ -8,7 +8,6 @@ import Link from "next/link";
 function Hero() {
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060606] text-white">
-      {/* Background Pattern */}
       <div className="absolute inset-0 z-0 opacity-20">
         <Squares
           direction="diagonal"
@@ -19,7 +18,6 @@ function Hero() {
         />
       </div>
 
-      {/* Edge Blur Overlays */}
       <div className="pointer-events-none absolute inset-0 z-5">
         {/* Top blur */}
         <div className="absolute top-0 left-0 right-0 h-32 bg-linear-to-b from-[#0a0a0a] to-transparent" />

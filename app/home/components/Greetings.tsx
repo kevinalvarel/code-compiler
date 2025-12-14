@@ -1,5 +1,5 @@
 import DecryptedText from "@/components/react-bits/DecryptedText";
-import { getSession } from "@/server/auth";
+import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 const Greetings = async () => {

@@ -55,7 +55,7 @@ const Language = () => {
           y: 0,
           opacity: 1,
           duration: 0.8,
-          ease: "power3.out",
+          ease: "elastic",
         }
       )
         .fromTo(
@@ -65,7 +65,7 @@ const Language = () => {
             y: 0,
             opacity: 1,
             duration: 0.8,
-            ease: "power3.out",
+            ease: "elastic",
           },
           "-=0.6"
         )
@@ -77,7 +77,7 @@ const Language = () => {
             opacity: 1,
             duration: 0.8,
             stagger: 0.15,
-            ease: "power3.out",
+            ease: "elastic",
           },
           "-=0.6"
         );

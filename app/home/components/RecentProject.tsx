@@ -1,6 +1,6 @@
 import SpotlightCard from "@/components/react-bits/SpotlightCard";
 import { getProjects } from "@/json/projects";
-import { getSession } from "@/server/auth";
+import { getSession } from "@/lib/auth";
 import { Clock, Folder, ArrowRight } from "lucide-react"; // Tambah import icon
 import Link from "next/link";
 import { redirect } from "next/navigation";

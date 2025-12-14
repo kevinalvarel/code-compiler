@@ -1,4 +1,4 @@
-import { getSession } from "@/server/auth";
+import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Header from "./components/Header";
 import QuickStart from "./components/QuickStart";

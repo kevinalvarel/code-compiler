@@ -1,4 +1,4 @@
-import { getSession } from "@/server/auth";
+import { getSession } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { Code2 } from "lucide-react";
 import { SignoutButton } from "@/components/auth/signout-button";
