@@ -10,7 +10,7 @@ const QuickStart = () => {
           <Plus className="w-5 h-5 text-indigo-500" /> Quick Start
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-2xl">
-          <Link href="/playground/new">
+          <Link href="/playground">
             <SpotlightCard
               className="h-40 group cursor-pointer"
               spotlightColor="rgba(99, 102, 241, 0.2)"
