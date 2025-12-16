@@ -1,10 +1,13 @@
 "use client";
 
-import { useEffect, useRef } from "react";
-import { SiCplusplus, SiJavascript, SiReact } from "react-icons/si";
+import { SiJavascript, SiPython, SiTypescript } from "react-icons/si";
+import { FaJava, FaPhp } from "react-icons/fa";
 import { TbBrandCSharp } from "react-icons/tb";
-import gsap from "gsap";
+
+import { useEffect, useRef } from "react";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+
+import gsap from "gsap";
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -12,26 +15,38 @@ const languages = [
   {
     name: "JavaScript",
     description: "Web Development",
-    icon: <SiJavascript className="w-8 h-8 text-yellow-400" />,
+    icon: <SiJavascript className="w-8 h-8 text-[#F7DF1E]" />,
     color: "bg-yellow-500/10 border-yellow-500/20 hover:border-yellow-500/50",
   },
   {
-    name: "C++",
-    description: "System Programming",
-    icon: <SiCplusplus className="w-8 h-8 text-blue-500" />,
+    name: "Typescript",
+    description: "Typesafe JavaScript",
+    icon: <SiTypescript className="w-8 h-8 text-[#3178C6]" />,
     color: "bg-blue-500/10 border-blue-500/20 hover:border-blue-500/50",
+  },
+  {
+    name: "Python",
+    description: "System Programming",
+    icon: <SiPython className="w-8 h-8 text-[#3776AB]" />,
+    color: "bg-blue-500/10 border-blue-500/20 hover:border-blue-500/50",
+  },
+  {
+    name: "Java",
+    description: "Java Applications",
+    icon: <FaJava className="w-8 h-8 text-[#ED8B00]" />,
+    color: "bg-orange-500/10 border-orange-500/20 hover:border-orange-500/50",
   },
   {
     name: "C#",
     description: "Enterprise & Game Dev",
-    icon: <TbBrandCSharp className="w-8 h-8 text-purple-500" />,
+    icon: <TbBrandCSharp className="w-8 h-8 text-[#512BD4]" />,
     color: "bg-purple-500/10 border-purple-500/20 hover:border-purple-500/50",
   },
   {
-    name: "React",
-    description: "UI Library",
-    icon: <SiReact className="w-8 h-8 text-cyan-400" />,
-    color: "bg-cyan-500/10 border-cyan-500/20 hover:border-cyan-500/50",
+    name: "Php",
+    description: "Web Development",
+    icon: <FaPhp className="w-8 h-8 text-[#777BB4]" />,
+    color: "bg-indigo-500/10 border-indigo-500/20 hover:border-indigo-500/50",
   },
 ];
 
@@ -102,7 +117,7 @@ const Language = () => {
           </p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {languages.map((lang, index) => (
             <div
               key={index}
