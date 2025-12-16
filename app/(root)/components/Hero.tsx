@@ -5,6 +5,7 @@ import SpotlightCard from "@/components/react-bits/SpotlightCard";
 import { ArrowRight } from "lucide-react";
 
 import Link from "next/link";
+import { Button } from "@/components/ui/button";
 function Hero() {
   return (
     <main className="relative min-h-screen w-full overflow-hidden bg-[#060606] text-white">
@@ -48,17 +49,22 @@ function Hero() {
         {/* CTA Buttons */}
         <div className="mb-20 flex flex-col items-center gap-4 sm:flex-row">
           <Link href="/login">
-            <MagnetButton className="group rounded-full bg-white px-8 py-3 text-black transition-all hover:bg-neutral-200">
+            <Button
+              variant="default"
+              className="group rounded-full bg-white px-4 py-2 "
+            >
               <span className="flex items-center gap-2 font-medium">
                 Mulai Coding
-                <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
               </span>
-            </MagnetButton>
+            </Button>
           </Link>
 
-          <MagnetButton className="rounded-full border border-neutral-800 bg-transparent px-8 py-3 text-white transition-all hover:bg-neutral-900">
+          <Button
+            variant="outline"
+            className="rounded-full border border-neutral-800 bg-transparent px-4 py-2 "
+          >
             <span className="font-medium">Tentang Kami</span>
-          </MagnetButton>
+          </Button>
         </div>
 
         {/* Feature Grid / Spotlight Cards */}
