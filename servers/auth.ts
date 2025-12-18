@@ -18,12 +18,12 @@ export async function signUpAction(formData: FormData) {
         name,
       },
     });
-
-    redirect("/login");
   } catch (error) {
     console.error("Sign up error:", error);
-    throw error; // atau return { error: "Gagal mendaftar" }
+    return { error: "Gagal mendaftar. Silakan coba lagi." };
   }
+
+  redirect("/login");
 }
 
 // Sign In Action
@@ -39,10 +39,12 @@ export async function signInAction(formData: FormData) {
       },
     });
 
-    console.log("Login result:", result); // Debug
+    if (!result) {
+      return { error: "Email atau password salah." };
+    }
   } catch (error) {
     console.error("Sign in error:", error);
-    throw error; // atau return { error: "Login gagal" }
+    return { error: "Email atau password salah. Silakan coba lagi." };
   }
 
   redirect("/home");

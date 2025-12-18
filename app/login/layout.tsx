@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Poppins, Plus_Jakarta_Sans } from "next/font/google";
+import { Toaster } from "sonner";
 import "../globals.css";
 
 const poppins = Poppins({
@@ -31,6 +32,17 @@ export default function RootLayout({
         className={` ${poppins.variable} ${plusJakartaSans.variable} antialiased`}
       >
         {children}
+        <Toaster
+          position="top-center"
+          richColors
+          theme="dark"
+          toastOptions={{
+            style: {
+              background: "#171717",
+              border: "1px solid #262626",
+            },
+          }}
+        />
       </body>
     </html>
   );

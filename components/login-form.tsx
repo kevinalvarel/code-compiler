@@ -1,4 +1,8 @@
+"use client";
+
 import { cn } from "@/lib/utils";
+import { useState } from "react";
+import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -18,6 +22,28 @@ export function LoginForm({
   className,
   ...props
 }: React.ComponentProps<"div">) {
+  const [isLoading, setIsLoading] = useState(false);
+
+  async function handleSubmit(formData: FormData) {
+    setIsLoading(true);
+
+    try {
+      const result = await signInAction(formData);
+
+      if (result?.error) {
+        toast.error("Login Gagal", {
+          description: result.error,
+        });
+      }
+    } catch {
+      toast.error("Login Gagal", {
+        description: "Terjadi kesalahan. Silakan coba lagi.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
   return (
     <div className={cn("flex flex-col gap-6", className)} {...props}>
       <Card className="bg-card/30 backdrop-blur-3xl border border-white/20 shadow-2xl ring-1 ring-white/10">
@@ -46,7 +72,7 @@ export function LoginForm({
           </div>
 
           {/* Email/Password Form */}
-          <form className="space-y-4" action={signInAction}>
+          <form className="space-y-4" action={handleSubmit}>
             <Field>
               <FieldLabel htmlFor="email">Email</FieldLabel>
               <Input
@@ -55,6 +81,7 @@ export function LoginForm({
                 type="email"
                 placeholder="email@example.com"
                 required
+                disabled={isLoading}
                 className="bg-background/50"
               />
             </Field>
@@ -73,11 +100,12 @@ export function LoginForm({
                 name="password"
                 type="password"
                 required
+                disabled={isLoading}
                 className="bg-background/50"
               />
             </Field>
-            <Button type="submit" className="w-full">
-              Masuk
+            <Button type="submit" className="w-full" disabled={isLoading}>
+              {isLoading ? "Memproses..." : "Masuk"}
             </Button>
           </form>
 

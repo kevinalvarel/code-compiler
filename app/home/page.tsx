@@ -10,7 +10,7 @@ const Home = async () => {
   if (!session) redirect("/login");
 
   return (
-    <div className="min-h-screen bg-black text-white p-8">
+    <div className="min-h-screen bg-black text-white p-8 overflow-x-hidden">
       <Header />
       <Greetings />
       <QuickStart />
