@@ -2,11 +2,9 @@
 
 import { useState, useCallback, useEffect } from "react";
 import dynamic from "next/dynamic";
-import LanguageSelector from "./components/LanguageSelector";
 import OutputPanel from "./components/OutputPanel";
 import { CODE_SNIPPETS } from "@/utils/constant";
-import { FaCode, FaCopy, FaCheck, FaRedo, FaHome } from "react-icons/fa";
-import Link from "next/link";
+import { PlaygroundHeader, EditorPanel, ConsolePanel } from "./components/ui";
 
 // Dynamic import to avoid SSR issues with Monaco
 const CodeEditor = dynamic(() => import("./components/CodeEditor"), {
@@ -116,99 +114,34 @@ const Playground = () => {
 
   return (
     <div className="flex h-screen flex-col bg-black text-white">
-      {/* Header */}
-      <header className="flex flex-col gap-4 border-b border-neutral-800 bg-black px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
-        <div className="flex items-center gap-3">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/20 sm:h-10 sm:w-10">
-            <FaCode className="h-4 w-4 text-indigo-400 sm:h-5 sm:w-5" />
-          </div>
-          <div>
-            <h1 className="text-base font-semibold text-white sm:text-lg">
-              Pelajarin Playground
-            </h1>
-            <p className="text-[10px] text-neutral-400 sm:text-xs">
-              Write, run, and test your code
-            </p>
-          </div>
-        </div>
-
-        <div className="flex items-center gap-2 sm:gap-3">
-          <LanguageSelector
-            language={language}
-            onSelect={handleLanguageChange}
-          />
-
-          <div className="hidden h-6 w-px bg-neutral-800 sm:block" />
-
-          <button
-            onClick={handleCopyCode}
-            className="flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 sm:px-3 sm:py-2"
-            title="Copy code"
-          >
-            {copied ? (
-              <FaCheck className="h-4 w-4 text-green-500" />
-            ) : (
-              <FaCopy className="h-4 w-4" />
-            )}
-          </button>
-
-          <button
-            onClick={handleResetCode}
-            className="flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 sm:px-3 sm:py-2"
-            title="Kembalikan ke kode semula"
-          >
-            <FaRedo className="h-4 w-4" />
-          </button>
-          <button
-            className="flex items-center gap-2 rounded-lg border border-neutral-800 bg-neutral-900 p-2 text-sm font-medium text-white transition-colors hover:bg-neutral-800 sm:px-3 sm:py-2"
-            title="Kembali ke Beranda"
-          >
-            <Link href="/home">
-              <FaHome className="h-4 w-4" />
-            </Link>
-          </button>
-        </div>
-      </header>
+      <PlaygroundHeader
+        language={language}
+        onLanguageChange={handleLanguageChange}
+        onCopyCode={handleCopyCode}
+        onResetCode={handleResetCode}
+        copied={copied}
+      />
 
       {/* Main Content */}
       <main className="flex flex-1 flex-col gap-3 overflow-hidden p-3 md:flex-row md:gap-4 md:p-4">
-        {/* Editor Panel */}
-        <div className="flex h-1/2 flex-col md:h-full md:w-1/2">
-          <div className="mb-2 flex items-center justify-between">
-            <span className="text-xs font-medium text-neutral-400 sm:text-sm">
-              Editor
-            </span>
-            <span className="rounded bg-indigo-500/20 px-2 py-0.5 text-[10px] text-indigo-400 capitalize sm:text-xs">
-              {language}
-            </span>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <CodeEditor
-              language={language}
-              value={code}
-              onChange={handleCodeChange}
-              theme="vs-dark"
-            />
-          </div>
-        </div>
+        <EditorPanel title="Editor" badge={language}>
+          <CodeEditor
+            language={language}
+            value={code}
+            onChange={handleCodeChange}
+            theme="vs-dark"
+          />
+        </EditorPanel>
 
-        {/* Output Panel */}
-        <div className="flex h-1/2 flex-col md:h-full md:w-1/2">
-          <div className="mb-2">
-            <span className="text-xs font-medium text-neutral-400 sm:text-sm">
-              Console
-            </span>
-          </div>
-          <div className="flex-1 overflow-hidden">
-            <OutputPanel
-              output={output}
-              error={error}
-              isLoading={isLoading}
-              onRun={handleRunCode}
-              onClear={handleClearOutput}
-            />
-          </div>
-        </div>
+        <ConsolePanel title="Console">
+          <OutputPanel
+            output={output}
+            error={error}
+            isLoading={isLoading}
+            onRun={handleRunCode}
+            onClear={handleClearOutput}
+          />
+        </ConsolePanel>
       </main>
     </div>
   );
