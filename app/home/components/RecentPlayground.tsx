@@ -5,7 +5,7 @@ import { Clock, Folder, ArrowRight } from "lucide-react"; // Tambah import icon
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
-const RecentProject = async () => {
+const RecentPlayground = async () => {
   const session = await getSession();
   if (!session) redirect("/login");
 
@@ -15,7 +15,7 @@ const RecentProject = async () => {
     <div>
       <section>
         <h2 className="text-xl font-semibold mb-6 flex items-center gap-2 text-neutral-100">
-          <Clock className="w-5 h-5 text-emerald-500" /> Recent Projects
+          <Clock className="w-5 h-5 text-emerald-500" /> Recent Playground
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
           {projects.map((project) => (
@@ -75,4 +75,4 @@ const RecentProject = async () => {
   );
 };
 
-export default RecentProject;
+export default RecentPlayground;

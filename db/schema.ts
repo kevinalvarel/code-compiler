@@ -73,9 +73,42 @@ export const verification = pgTable(
   (table) => [index("verification_identifier_idx").on(table.identifier)]
 );
 
+export const snippets = pgTable(
+  "snippets",
+  {
+    id: text("id").primaryKey(),
+    userId: text("user_id")
+      .notNull()
+      .references(() => user.id, { onDelete: "cascade" }),
+    title: text("title").notNull(),
+    description: text("description"),
+    code: text("code").notNull(),
+    language: text("language").notNull(), // e.g., "javascript", "python", "typescript"
+    isPublic: boolean("is_public").default(false).notNull(),
+    createdAt: timestamp("created_at").defaultNow().notNull(),
+    updatedAt: timestamp("updated_at")
+      .defaultNow()
+      .$onUpdate(() => new Date())
+      .notNull(),
+  },
+  (table) => [
+    index("snippets_userId_idx").on(table.userId),
+    index("snippets_language_idx").on(table.language),
+    index("snippets_isPublic_idx").on(table.isPublic),
+  ]
+);
+
+export const snippetsRelations = relations(snippets, ({ one }) => ({
+  user: one(user, {
+    fields: [snippets.userId],
+    references: [user.id],
+  }),
+}));
+
 export const userRelations = relations(user, ({ many }) => ({
   sessions: many(session),
   accounts: many(account),
+  snippets: many(snippets),
 }));
 
 export const sessionRelations = relations(session, ({ one }) => ({
@@ -96,3 +129,5 @@ export type User = typeof user.$inferSelect;
 export type Session = typeof session.$inferSelect;
 export type Account = typeof account.$inferSelect;
 export type Verification = typeof verification.$inferSelect;
+export type Snippet = typeof snippets.$inferSelect;
+export type NewSnippet = typeof snippets.$inferInsert;

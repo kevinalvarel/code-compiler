@@ -122,14 +122,13 @@ const Playground = () => {
         copied={copied}
       />
 
-      {/* Main Content */}
       <main className="flex flex-1 flex-col gap-3 overflow-hidden p-3 md:flex-row md:gap-4 md:p-4">
         <EditorPanel title="Editor" badge={language}>
           <CodeEditor
             language={language}
             value={code}
             onChange={handleCodeChange}
-            theme="vs-dark"
+            theme="hc-black"
           />
         </EditorPanel>
 

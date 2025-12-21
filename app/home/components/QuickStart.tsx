@@ -1,5 +1,5 @@
 import SpotlightCard from "@/components/react-bits/SpotlightCard";
-import { Code2, LayoutTemplate, Plus } from "lucide-react";
+import { Code2, Plus } from "lucide-react";
 import Link from "next/link";
 
 const QuickStart = () => {
@@ -25,27 +25,6 @@ const QuickStart = () => {
                   </h3>
                   <p className="text-sm text-neutral-400">
                     Start coding from scratch
-                  </p>
-                </div>
-              </div>
-            </SpotlightCard>
-          </Link>
-
-          <Link href="/templates">
-            <SpotlightCard
-              className="h-40 group cursor-pointer"
-              spotlightColor="rgba(236, 72, 153, 0.2)"
-            >
-              <div className="p-6 h-full flex flex-col justify-between relative z-10">
-                <div className="p-3 bg-neutral-800/50 w-fit rounded-lg group-hover:bg-pink-500/20 transition-colors">
-                  <LayoutTemplate className="w-6 h-6 text-pink-400" />
-                </div>
-                <div>
-                  <h3 className="text-lg font-medium text-white mb-1">
-                    Browse Templates
-                  </h3>
-                  <p className="text-sm text-neutral-400">
-                    Start with a pre-built setup
                   </p>
                 </div>
               </div>

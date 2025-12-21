@@ -14,5 +14,9 @@ export const SignoutButton = () => {
       },
     });
 
-  return <Button onClick={signout}>Keluar</Button>;
+  return (
+    <Button className="cursor-pointer" onClick={signout}>
+      Keluar
+    </Button>
+  );
 };

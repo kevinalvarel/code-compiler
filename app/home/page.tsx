@@ -3,7 +3,7 @@ import { redirect } from "next/navigation";
 import Header from "./components/Header";
 import QuickStart from "./components/QuickStart";
 import Greetings from "./components/Greetings";
-import RecentProject from "./components/RecentProject";
+import RecentPlayground from "./components/RecentPlayground";
 
 const Home = async () => {
   const session = await getSession();
@@ -14,7 +14,7 @@ const Home = async () => {
       <Header />
       <Greetings />
       <QuickStart />
-      <RecentProject />
+      <RecentPlayground />
     </div>
   );
 };

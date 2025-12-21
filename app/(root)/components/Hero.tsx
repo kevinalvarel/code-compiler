@@ -1,8 +1,6 @@
 import Squares from "@/components/react-bits/Squares";
 import SplitText from "@/components/react-bits/SplitText";
-import MagnetButton from "@/components/react-bits/MagnetButton";
 import SpotlightCard from "@/components/react-bits/SpotlightCard";
-import { ArrowRight } from "lucide-react";
 
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
@@ -51,7 +49,7 @@ function Hero() {
           <Link href="/login">
             <Button
               variant="default"
-              className="group rounded-full bg-white px-4 py-2 "
+              className="group rounded-full bg-white px-4 py-2 cursor-pointer"
             >
               <span className="flex items-center gap-2 font-medium">
                 Mulai Coding
@@ -61,7 +59,7 @@ function Hero() {
 
           <Button
             variant="outline"
-            className="rounded-full border border-neutral-800 bg-transparent px-4 py-2 "
+            className="rounded-full border border-neutral-800 bg-transparent px-4 py-2 cursor-pointer"
           >
             <span className="font-medium">Tentang Kami</span>
           </Button>
