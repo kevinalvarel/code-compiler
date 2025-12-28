@@ -1,6 +1,6 @@
 "use client";
 
-import { OutputHeader, OutputContent } from "./ui";
+import { OutputHeader, OutputContent } from "./ui/export";
 
 interface OutputPanelProps {
   output: string;

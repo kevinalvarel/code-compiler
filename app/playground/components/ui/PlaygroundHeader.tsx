@@ -1,6 +1,13 @@
 "use client";
 
-import { FaCode, FaCopy, FaCheck, FaRedo, FaHome } from "react-icons/fa";
+import {
+  FaCode,
+  FaCopy,
+  FaCheck,
+  FaRedo,
+  FaHome,
+  FaSave,
+} from "react-icons/fa";
 import IconButton from "./IconButton";
 import LanguageSelector from "../LanguageSelector";
 
@@ -9,6 +16,7 @@ interface PlaygroundHeaderProps {
   onLanguageChange: (language: string) => void;
   onCopyCode: () => void;
   onResetCode: () => void;
+  onSaveCode: () => void;
   copied: boolean;
 }
 
@@ -37,6 +45,7 @@ const PlaygroundHeader = ({
   onLanguageChange,
   onCopyCode,
   onResetCode,
+  onSaveCode,
   copied,
 }: PlaygroundHeaderProps) => {
   return (
@@ -65,6 +74,14 @@ const PlaygroundHeader = ({
           onClick={onResetCode}
           title="Kembalikan ke kode semula"
         />
+
+        <IconButton
+          icon={<FaSave className="h-4 w-4" />}
+          title="Simpan kode"
+          onClick={onSaveCode}
+        />
+
+        <Divider />
 
         <IconButton
           icon={<FaHome className="h-4 w-4" />}
