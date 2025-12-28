@@ -1,9 +1,9 @@
 "use client";
 
 import { useState, useCallback, useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import dynamic from "next/dynamic";
-import OutputPanel from "./components/OutputPanel";
+import OutputPanel from "../components/OutputPanel";
 import { CODE_SNIPPETS } from "@/utils/constant";
 import {
   PlaygroundHeader,
@@ -11,10 +11,9 @@ import {
   ConsolePanel,
   Toast,
   SaveDialog,
-} from "./components/ui/export";
+} from "../components/ui/export";
 
-// Dynamic import to avoid SSR issues with Monaco
-const CodeEditor = dynamic(() => import("./components/CodeEditor"), {
+const CodeEditor = dynamic(() => import("../components/CodeEditor"), {
   ssr: false,
   loading: () => (
     <div className="flex h-full w-full items-center justify-center rounded-lg border border-neutral-800 bg-neutral-900">
@@ -28,47 +27,20 @@ const CodeEditor = dynamic(() => import("./components/CodeEditor"), {
 
 type SupportedLanguage = keyof typeof CODE_SNIPPETS;
 
-const STORAGE_KEY = "playground_saved_code";
-
-// Helper functions untuk localStorage
-const saveToLocalStorage = (language: string, code: string) => {
-  try {
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    const data = savedData ? JSON.parse(savedData) : {};
-    data[language] = {
-      code,
-      savedAt: new Date().toISOString(),
-    };
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(data));
-    return true;
-  } catch (error) {
-    console.error("Gagal menyimpan ke localStorage:", error);
-    return false;
-  }
-};
-
-const loadFromLocalStorage = (language: string): string | null => {
-  try {
-    const savedData = localStorage.getItem(STORAGE_KEY);
-    if (savedData) {
-      const data = JSON.parse(savedData);
-      return data[language]?.code || null;
-    }
-    return null;
-  } catch (error) {
-    console.error("Gagal memuat dari localStorage:", error);
-    return null;
-  }
-};
-
-const Playground = () => {
+const PlaygroundSlugPage = () => {
+  const params = useParams();
   const router = useRouter();
+  const slug = params.slug as string;
+
   const [language, setLanguage] = useState<SupportedLanguage>("javascript");
-  const [code, setCode] = useState<string>(CODE_SNIPPETS.javascript);
+  const [code, setCode] = useState<string>("");
   const [output, setOutput] = useState<string>("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [isLoadingSnippet, setIsLoadingSnippet] = useState<boolean>(true);
   const [copied, setCopied] = useState(false);
+  const [snippetId, setSnippetId] = useState<string | null>(null);
+  const [snippetTitle, setSnippetTitle] = useState<string>("");
 
   // Toast state
   const [toast, setToast] = useState<{
@@ -93,15 +65,39 @@ const Playground = () => {
     setToast((prev) => ({ ...prev, isVisible: false }));
   };
 
-  // Load saved code saat komponen pertama kali dimuat atau bahasa berubah
+  // Fetch snippet data
   useEffect(() => {
-    const savedCode = loadFromLocalStorage(language);
-    if (savedCode) {
-      setCode(savedCode);
-    } else {
-      setCode(CODE_SNIPPETS[language]);
+    const fetchSnippet = async () => {
+      try {
+        setIsLoadingSnippet(true);
+        const response = await fetch(`/api/snippets/${slug}`);
+
+        if (!response.ok) {
+          if (response.status === 404) {
+            showToast("Snippet tidak ditemukan", "error");
+            router.push("/playground");
+            return;
+          }
+          throw new Error("Failed to fetch snippet");
+        }
+
+        const data = await response.json();
+        setCode(data.snippet.code);
+        setLanguage(data.snippet.language as SupportedLanguage);
+        setSnippetId(data.snippet.id);
+        setSnippetTitle(data.snippet.title);
+      } catch (err) {
+        console.error("Error fetching snippet:", err);
+        showToast("Gagal memuat snippet", "error");
+      } finally {
+        setIsLoadingSnippet(false);
+      }
+    };
+
+    if (slug) {
+      fetchSnippet();
     }
-  }, [language]);
+  }, [slug, router]);
 
   const handleLanguageChange = (newLanguage: string) => {
     setLanguage(newLanguage as SupportedLanguage);
@@ -169,13 +165,10 @@ const Playground = () => {
 
   // Open save dialog
   const handleSaveCode = () => {
-    // Save to localStorage first
-    saveToLocalStorage(language, code);
-    // Open dialog to save to database
     setIsSaveDialogOpen(true);
   };
 
-  // Save to database
+  // Update snippet in database
   const handleSaveToDatabase = async (data: {
     title: string;
     description: string;
@@ -184,8 +177,8 @@ const Playground = () => {
     setIsSaving(true);
 
     try {
-      const response = await fetch("/api/snippets", {
-        method: "POST",
+      const response = await fetch(`/api/snippets/${snippetId}`, {
+        method: "PUT",
         headers: {
           "Content-Type": "application/json",
         },
@@ -200,15 +193,14 @@ const Playground = () => {
 
       if (response.ok) {
         setIsSaveDialogOpen(false);
-        showToast("Snippet berhasil disimpan!", "success");
-        // Redirect to the saved snippet page
-        router.push(`/playground/${result.snippet.id}`);
+        setSnippetTitle(data.title);
+        showToast("Snippet berhasil diupdate!", "success");
       } else {
-        showToast(result.error || "Gagal menyimpan snippet", "error");
+        showToast(result.error || "Gagal mengupdate snippet", "error");
       }
     } catch (err) {
-      console.error("Failed to save snippet:", err);
-      showToast("Gagal menyimpan snippet", "error");
+      console.error("Failed to update snippet:", err);
+      showToast("Gagal mengupdate snippet", "error");
     } finally {
       setIsSaving(false);
     }
@@ -223,12 +215,10 @@ const Playground = () => {
   // Keyboard shortcuts
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
-      // Ctrl/Cmd + Enter untuk run
       if ((event.ctrlKey || event.metaKey) && event.key === "Enter") {
         event.preventDefault();
         handleRunCode();
       }
-      // Ctrl/Cmd + S untuk save
       if ((event.ctrlKey || event.metaKey) && event.key === "s") {
         event.preventDefault();
         handleSaveCode();
@@ -239,9 +229,19 @@ const Playground = () => {
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [handleRunCode, code, language]);
 
+  if (isLoadingSnippet) {
+    return (
+      <div className="flex h-screen items-center justify-center bg-black">
+        <div className="flex flex-col items-center gap-4">
+          <div className="h-8 w-8 animate-spin rounded-full border-4 border-emerald-500 border-t-transparent" />
+          <span className="text-neutral-400">Memuat snippet...</span>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex h-screen flex-col bg-black text-white">
-      {/* Toast notification - positioned at bottom */}
       <Toast
         message={toast.message}
         type={toast.type}
@@ -249,13 +249,13 @@ const Playground = () => {
         onClose={hideToast}
       />
 
-      {/* Save Dialog */}
       <SaveDialog
         isOpen={isSaveDialogOpen}
         onClose={() => setIsSaveDialogOpen(false)}
         onSave={handleSaveToDatabase}
         language={language}
         isLoading={isSaving}
+        initialTitle={snippetTitle}
       />
 
       <PlaygroundHeader
@@ -265,6 +265,7 @@ const Playground = () => {
         onCopyCode={handleCopyCode}
         onResetCode={handleResetCode}
         copied={copied}
+        title={snippetTitle}
       />
 
       <main className="flex flex-1 flex-col gap-3 overflow-hidden p-3 md:flex-row md:gap-4 md:p-4">
@@ -291,4 +292,4 @@ const Playground = () => {
   );
 };
 
-export default Playground;
+export default PlaygroundSlugPage;

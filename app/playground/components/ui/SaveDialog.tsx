@@ -13,6 +13,9 @@ interface SaveDialogProps {
   }) => void;
   language: string;
   isLoading: boolean;
+  initialTitle?: string;
+  initialDescription?: string;
+  initialIsPublic?: boolean;
 }
 
 const SaveDialog = ({
@@ -21,10 +24,24 @@ const SaveDialog = ({
   onSave,
   language,
   isLoading,
+  initialTitle = "",
+  initialDescription = "",
+  initialIsPublic = false,
 }: SaveDialogProps) => {
-  const [title, setTitle] = useState("");
-  const [description, setDescription] = useState("");
-  const [isPublic, setIsPublic] = useState(false);
+  const [title, setTitle] = useState(initialTitle);
+  const [description, setDescription] = useState(initialDescription);
+  const [isPublic, setIsPublic] = useState(initialIsPublic);
+  const [wasOpen, setWasOpen] = useState(false);
+
+  // Reset form when dialog opens (using previous state pattern)
+  if (isOpen && !wasOpen) {
+    setWasOpen(true);
+    setTitle(initialTitle);
+    setDescription(initialDescription);
+    setIsPublic(initialIsPublic);
+  } else if (!isOpen && wasOpen) {
+    setWasOpen(false);
+  }
 
   if (!isOpen) return null;
 
@@ -51,7 +68,7 @@ const SaveDialog = ({
         <div className="flex items-center justify-between mb-6">
           <h2 className="text-lg font-semibold text-white flex items-center gap-2">
             <Save className="h-5 w-5 text-emerald-500" />
-            Save Snippet
+            {initialTitle ? "Update Snippet" : "Save Snippet"}
           </h2>
           <button
             onClick={onClose}
@@ -145,7 +162,7 @@ const SaveDialog = ({
               ) : (
                 <>
                   <Save className="h-4 w-4" />
-                  Save
+                  {initialTitle ? "Update" : "Save"}
                 </>
               )}
             </button>

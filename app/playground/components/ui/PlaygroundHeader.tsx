@@ -18,19 +18,20 @@ interface PlaygroundHeaderProps {
   onResetCode: () => void;
   onSaveCode: () => void;
   copied: boolean;
+  title?: string;
 }
 
-const Logo = () => (
+const Logo = ({ title }: { title?: string }) => (
   <div className="flex items-center gap-3">
     <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-indigo-500/20 sm:h-10 sm:w-10">
       <FaCode className="h-4 w-4 text-indigo-400 sm:h-5 sm:w-5" />
     </div>
     <div>
       <h1 className="text-base font-semibold text-white sm:text-lg">
-        Pelajarin Playground
+        {title || "Pelajarin Playground"}
       </h1>
       <p className="text-[10px] text-neutral-400 sm:text-xs">
-        Write, run, and test your code
+        {title ? "Editing snippet" : "Write, run, and test your code"}
       </p>
     </div>
   </div>
@@ -47,10 +48,11 @@ const PlaygroundHeader = ({
   onResetCode,
   onSaveCode,
   copied,
+  title,
 }: PlaygroundHeaderProps) => {
   return (
     <header className="flex flex-col gap-4 border-b border-neutral-800 bg-black px-4 py-3 sm:flex-row sm:items-center sm:justify-between sm:px-6 sm:py-4">
-      <Logo />
+      <Logo title={title} />
 
       <div className="flex items-center gap-2 sm:gap-3">
         <LanguageSelector language={language} onSelect={onLanguageChange} />
