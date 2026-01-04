@@ -56,13 +56,6 @@ function Hero() {
               </span>
             </Button>
           </Link>
-
-          <Button
-            variant="outline"
-            className="rounded-full border border-neutral-800 bg-transparent px-4 py-2 cursor-pointer"
-          >
-            <span className="font-medium">Tentang Kami</span>
-          </Button>
         </div>
 
         {/* Feature Grid / Spotlight Cards */}
